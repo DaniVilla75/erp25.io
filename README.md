@@ -1,4 +1,4 @@
-# erp25.io
+[![Ir a la Web](https://img.shields.io/badge/Ir%20a%20la%20Web-007BFF?style=for-the-badge&logo=link&logoColor=white)](https://www.tuweb.com)
 ERP en excel para alumnos de administración
 
 # 📁 Estructura General del Archivo de Excel
