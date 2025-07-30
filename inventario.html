@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 6 – Inventario y stock</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+        h2 {
+            color: #009688;
+            border-bottom: 2px solid #4db6ac;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #00796b;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .table {
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        .table thead {
+            background: linear-gradient(to right, #009688, #00796b);
+            color: white;
+        }
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #009688;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-bottom: 20px;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #009688;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        .floating-btn:hover {
+            background-color: #00796b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .floating-btn i {
+            font-size: 24px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #009688;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #00796b;
+            text-decoration: underline;
+        }
+        strong {
+            color: #00796b;
+        }
+        .badge-teal {
+            background-color: #009688;
+            color: white;
+        }
+        .formula-box {
+            background-color: #e0f2f1;
+            border-left: 4px solid #4db6ac;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .kpi-box {
+            background-color: #b2dfdb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #00796b;
+        }
+        .kpi-title {
+            color: #00796b;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .yes {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .no {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .chart-placeholder {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9e9e9e;
+            margin-bottom: 20px;
+            border: 1px dashed #80cbc4;
+        }
+        /* Botones flotantes para funciones */
+        .function-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background-color: #FF9800;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .function-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .function-btn i {
+            font-size: 24px;
+        }
+        #si-btn {
+            bottom: 100px;
+            right: 30px;
+            background-color: #FF9800;
+        }
+        /* Modal */
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+        }
+        .modal-header {
+            background-color: #009688;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        .modal-body pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #FF9800;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .floating-btn, .function-btn {
+                width: 50px;
+                height: 50px;
+            }
+            .floating-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+            #si-btn {
+                bottom: 80px;
+                right: 20px;
+            }
+            .table-responsive {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="container mt-4">
+        <h2>🧮 Módulo 6 – Inventario y stock</h2>
+        <p class="lead">Sistema de gestión de inventario con control de stock, alertas de reposición y análisis de movimientos.</p>
+
+        <h3>🎯 Objetivos pedagógicos</h3>
+        <ul>
+            <li>Registrar movimientos de productos (entradas/salidas).</li>
+            <li>Controlar niveles de stock y detectar faltantes.</li>
+            <li>Automatizar alertas de reposición.</li>
+        </ul>
+
+        <h3>📄 Estructura de la hoja <code>Inventario</code></h3>
+        <pre>| Código | Producto       | Categoría | Stock Inicial | Entradas | Salidas | Stock Actual | Stock Mínimo | Reposición |</pre>
+
+        <div class="formula-box">
+            <h4>Fórmulas clave:</h4>
+            <ul class="list-unstyled">
+                <li><strong>Stock Actual</strong> = Stock Inicial + Entradas - Salidas</li>
+                <li><strong>Reposición</strong> = SI(Stock Actual < Stock Mínimo, "Sí", "No")</li>
+            </ul>
+        </div>
+
+        <h4>Extras sugeridos:</h4>
+        <ul>
+            <li>Validación de categorías con lista desplegable (Insumos, Servicios, Productos).</li>
+            <li>Formato condicional para resaltar productos con stock bajo.</li>
+            <li>Vinculación con hoja <code>Facturación</code> para actualizar salidas automáticamente.</li>
+        </ul>
+
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Stock Inicial</th>
+                        <th>Entradas</th>
+                        <th>Salidas</th>
+                        <th>Stock Actual</th>
+                        <th>Stock Mínimo</th>
+                        <th>Reposición</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PROD001</td>
+                        <td>Fertilizante</td>
+                        <td>Insumo</td>
+                        <td>50</td>
+                        <td>20</td>
+                        <td>65</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td class="yes">Sí</td>
+                    </tr>
+                    <tr>
+                        <td>PROD002</td>
+                        <td>Semillas Trigo</td>
+                        <td>Producto</td>
+                        <td>100</td>
+                        <td>50</td>
+                        <td>120</td>
+                        <td>30</td>
+                        <td>20</td>
+                        <td class="no">No</td>
+                    </tr>
+                    <tr>
+                        <td>PROD003</td>
+                        <td>Flete</td>
+                        <td>Servicio</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>📊 Dashboard de inventario</h3>
+        
+        <div class="kpi-box">
+            <h4>Indicadores clave:</h4>
+            <ul>
+                <li>Productos con stock crítico.</li>
+                <li>Categoría con más movimiento.</li>
+                <li>Tendencia de consumo semanal.</li>
+            </ul>
+        </div>
+
+        <div class="kpi-box">
+            <h4>Gráficos sugeridos:</h4>
+            <ul>
+                <li><strong>Columnas:</strong> stock por producto.</li>
+                <li><strong>Línea:</strong> evolución de entradas/salidas.</li>
+                <li><strong>Circular:</strong> distribución por categoría.</li>
+            </ul>
+        </div>
+
+        <h4>Ejemplo visual de dashboard:</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-column fa-3x"></i> Gráfico de columnas
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-line fa-3x"></i> Gráfico de líneas
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-pie fa-3x"></i> Gráfico circular
+                </div>
+            </div>
+        </div>
+
+        <h3>🎓 Actividades sugeridas</h3>
+        <ul>
+            <li><strong>Simulación de consumo:</strong> registrar salidas según facturas y actualizar stock.</li>
+            <li><strong>Gestión de reposición:</strong> decidir qué productos deben reponerse y justificar por qué.</li>
+            <li><strong>Optimización de inventario:</strong> ¿conviene aumentar el stock mínimo de algún producto?</li>
+        </ul>
+
+        <h3>📹 Recursos visuales</h3>
+        <ul>
+            <li><a href="https://www.youtube.com/watch?v=ejemplo_inventario" target="_blank">Video: ERP en Excel con módulo de inventario</a> – incluye gestión de productos y alertas.</li>
+            <li><a href="https://www.example.com/erp-inventario" target="_blank">Plantilla ERP con control de stock</a> – ideal para mostrar cómo se automatiza el inventario.</li>
+        </ul>
+    </section>
+
+    <!-- Botón flotante principal -->
+    <a href="index.html" class="floating-btn" title="Volver al índice">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <!-- Botón flotante para función SI -->
+    <div id="si-btn" class="function-btn" title="Ver función SI" data-bs-toggle="modal" data-bs-target="#siModal">
+        <i class="fas fa-question"></i>
+    </div>
+
+    <!-- Modal SI -->
+    <div class="modal fade" id="siModal" tabindex="-1" aria-labelledby="siModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="siModalLabel">Función SI en Excel</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Definición:</strong> La función SI permite realizar evaluaciones lógicas y devolver un valor si la condición es verdadera y otro si es falsa.</p>
+                    
+                    <h5>Sintaxis básica:</h5>
+                    <pre>=SI(prueba_lógica, valor_si_verdadero, valor_si_falso)</pre>
+                    
+                    <h5>Ejemplo práctico en inventario:</h5>
+                    <p>Para determinar si se necesita reposición de stock:</p>
+                    <pre>=SI(G2 < H2, "Sí", "No")</pre>
+                    <p>Donde:
+                        <ul>
+                            <li><strong>G2</strong>: Stock Actual</li>
+                            <li><strong>H2</strong>: Stock Mínimo</li>
+                            <li><strong>"Sí"</strong>: Valor si el stock actual es menor al mínimo</li>
+                            <li><strong>"No"</strong>: Valor si el stock actual es suficiente</li>
+                        </ul>
+                    </p>
+                    
+                    <h5>Ejemplos adicionales:</h5>
+                    <p>1. Clasificación de productos según stock:</p>
+                    <pre>=SI(G2 < H2, "Crítico", SI(G2 < H2*1.5, "Atención", "Normal"))</pre>
+                    
+                    <p>2. Prioridad de reposición:</p>
+                    <pre>=SI(Y(G2 < H2, E2 > 10), "Urgente", SI(G2 < H2, "Prioritario", "Normal"))</pre>
+                    <p>(Donde E2 son las entradas mensuales promedio)</p>
+                    
+                    <div class="alert alert-info">
+                        <strong>Tip:</strong> Puedes anidar múltiples funciones SI para crear evaluaciones más complejas, o usar SI.CONJUNTO en versiones recientes de Excel.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
