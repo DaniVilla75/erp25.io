@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 9 - Cultivos y Trazabilidad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+        h2 {
+            color: #2e7d32;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #388e3c;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .table {
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        #cultivos-table thead {
+            background: linear-gradient(to right, #81c784, #4caf50);
+            color: white;
+        }
+        #tareas-table thead {
+            background: linear-gradient(to right, #64b5f6, #1976d2);
+            color: white;
+        }
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #4caf50;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        .floating-btn:hover {
+            background-color: #388e3c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .floating-btn i {
+            font-size: 24px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #2e7d32;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #1b5e20;
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="container mt-4">
+        <h2>🌱 Módulo 9 – Cultivos y Trazabilidad</h2>
+        <p>En este módulo se gestionan las tareas agronómicas, el seguimiento de cultivos y el análisis de costos por hectárea dentro del proyecto educativo ERP. Ideal para vincular contenidos de ciencias naturales, matemáticas y economía.</p>
+
+        <h3>🎯 Objetivos pedagógicos</h3>
+        <ul>
+            <li>Identificar etapas del ciclo productivo agrícola.</li>
+            <li>Registrar tareas realizadas por lote y cultivo.</li>
+            <li>Simular trazabilidad agronómica y financiera.</li>
+            <li>Calcular costos por hectárea y rendimiento proyectado.</li>
+        </ul>
+
+        <h3>📄 Estructura de la hoja <code>Cultivos</code></h3>
+        <div class="table-responsive">
+            <table id="cultivos-table" class="table table-bordered text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Lote</th>
+                        <th>Superficie (ha)</th>
+                        <th>Tipo de Cultivo</th>
+                        <th>Fecha Siembra</th>
+                        <th>Fecha Cosecha</th>
+                        <th>Rendimiento Esperado (kg/ha)</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Campo 3</td>
+                        <td>15</td>
+                        <td>Maíz</td>
+                        <td>15/10/2025</td>
+                        <td>20/03/2026</td>
+                        <td>9.500</td>
+                        <td>Sembrado</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>📄 Estructura de la hoja <code>Tareas</code></h3>
+        <div class="table-responsive">
+            <table id="tareas-table" class="table table-bordered text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Lote</th>
+                        <th>Tarea</th>
+                        <th>Insumos</th>
+                        <th>Costo Total</th>
+                        <th>Responsable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>20/10/2025</td>
+                        <td>Campo 3</td>
+                        <td>Fertilización</td>
+                        <td>Urea (300 kg)</td>
+                        <td>$45.000</td>
+                        <td>Lucía Fernández</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>📊 Costos por hectárea</h3>
+        <pre>Cultivo: Maíz
+Lote: Campo 3
+Superficie: 15 ha
+
+Costo Total Tareas: $180.000
+Costo por hectárea: $12.000
+Rendimiento Esperado: 9.500 kg/ha
+Precio Estimado: $30/kg
+
+Ingresos proyectados por hectárea: $285.000
+Margen estimado: $273.000</pre>
+
+        <h3>🎓 Actividades sugeridas</h3>
+        <ul>
+            <li>Alta de cultivos: carga de lotes y fechas según zona productiva.</li>
+            <li>Registro de tareas: fertilización, siembra, fumigación, cosecha.</li>
+            <li>Simulación de trazabilidad: seguimiento cronológico por cultivo.</li>
+            <li>Análisis económico: cálculo de ingresos y márgenes.</li>
+        </ul>
+
+        <h3>📹 Recursos visuales</h3>
+        <ul>
+            <li><a href="https://www.youtube.com/watch?v=VRg7_pUuU1A" target="_blank">Video: Gestión de tareas agrícolas en Excel</a></li>
+            <li><a href="https://www.someka.net/products/farming-budget-template/" target="_blank">Plantilla de cultivo y presupuesto rural</a></li>
+        </ul>
+    </section>
+
+    <a href="index.html" class="floating-btn" title="Volver al índice">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

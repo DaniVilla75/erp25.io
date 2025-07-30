@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 9 – Producción agrícola</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+        h2 {
+            color: #689f38;
+            border-bottom: 2px solid #8bc34a;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #558b2f;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .table {
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        .table thead {
+            background: linear-gradient(to right, #689f38, #558b2f);
+            color: white;
+        }
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #689f38;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-bottom: 20px;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #689f38;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        .floating-btn:hover {
+            background-color: #558b2f;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .floating-btn i {
+            font-size: 24px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #689f38;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #558b2f;
+            text-decoration: underline;
+        }
+        strong {
+            color: #558b2f;
+        }
+        .badge-green {
+            background-color: #689f38;
+            color: white;
+        }
+        .formula-box {
+            background-color: #f1f8e9;
+            border-left: 4px solid #8bc34a;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .kpi-box {
+            background-color: #dcedc8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #558b2f;
+        }
+        .low-yield {
+            background-color: #ffebee;
+        }
+        /* Botones flotantes para funciones */
+        .function-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .function-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .function-btn i {
+            font-size: 24px;
+        }
+        #filters-btn {
+            bottom: 100px;
+            right: 30px;
+            background-color: #2196f3;
+        }
+        #pdf-btn {
+            bottom: 170px;
+            right: 30px;
+            background-color: #f44336;
+        }
+        #validation-btn {
+            bottom: 240px;
+            right: 30px;
+            background-color: #ff9800;
+        }
+        #link-btn {
+            bottom: 310px;
+            right: 30px;
+            background-color: #9c27b0;
+        }
+        #index-btn {
+            bottom: 380px;
+            right: 30px;
+            background-color: #607d8b;
+        }
+        /* Modal */
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+        }
+        .modal-header {
+            background-color: #689f38;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        .modal-body pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #2196f3;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .floating-btn, .function-btn {
+                width: 50px;
+                height: 50px;
+            }
+            .floating-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+            #filters-btn {
+                bottom: 80px;
+                right: 20px;
+            }
+            #pdf-btn {
+                bottom: 140px;
+                right: 20px;
+            }
+            #validation-btn {
+                bottom: 200px;
+                right: 20px;
+            }
+            #link-btn {
+                bottom: 260px;
+                right: 20px;
+            }
+            #index-btn {
+                bottom: 320px;
+                right: 20px;
+            }
+            .table-responsive {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="container mt-4">
+        <h2>🌾 Módulo 9 – Producción agrícola</h2>
+        <p class="lead">Sistema de gestión de cultivos con control de tareas, insumos y cálculo de rendimientos por lote.</p>
+
+        <h3>🎯 Objetivos pedagógicos</h3>
+        <ul>
+            <li>Registrar actividades productivas por lote.</li>
+            <li>Controlar insumos aplicados y tareas realizadas.</li>
+            <li>Calcular rendimiento y costos por hectárea.</li>
+            <li>Simular trazabilidad de cultivos.</li>
+        </ul>
+
+        <h3>📄 Hoja <code>Lotes_Cultivos</code></h3>
+        <pre>| Lote | Cultivo     | Fecha Siembra | Fecha Cosecha | Superficie (ha) | Rendimiento (kg/ha) | Total Cosechado | Observaciones |</pre>
+
+        <div class="formula-box">
+            <h4>Fórmulas clave:</h4>
+            <ul class="list-unstyled">
+                <li><strong>Total Cosechado</strong> = Superficie * Rendimiento</li>
+                <li><strong>Duración del ciclo</strong> = Fecha Cosecha - Fecha Siembra</li>
+            </ul>
+        </div>
+
+        <h4>Extras sugeridos:</h4>
+        <ul>
+            <li>Validación de cultivos con lista desplegable (Maíz, Soja, Trigo, etc.).</li>
+            <li>Formato condicional para destacar lotes con bajo rendimiento.</li>
+            <li>Vinculación con hoja <code>Tareas</code> e <code>Insumos</code> para trazabilidad.</li>
+        </ul>
+
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Lote</th>
+                        <th>Cultivo</th>
+                        <th>Fecha Siembra</th>
+                        <th>Fecha Cosecha</th>
+                        <th>Superficie (ha)</th>
+                        <th>Rendimiento (kg/ha)</th>
+                        <th>Total Cosechado</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Campo 1</td>
+                        <td>Maíz</td>
+                        <td>15/10/2025</td>
+                        <td>20/03/2026</td>
+                        <td>12</td>
+                        <td>9,500</td>
+                        <td>114,000</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="low-yield">
+                        <td>Campo 2</td>
+                        <td>Soja</td>
+                        <td>01/11/2025</td>
+                        <td>15/04/2026</td>
+                        <td>8</td>
+                        <td>2,800</td>
+                        <td>22,400</td>
+                        <td>Bajo rendimiento</td>
+                    </tr>
+                    <tr>
+                        <td>Campo 3</td>
+                        <td>Trigo</td>
+                        <td>20/09/2025</td>
+                        <td>10/01/2026</td>
+                        <td>15</td>
+                        <td>4,200</td>
+                        <td>63,000</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>📄 Hoja <code>Tareas</code></h3>
+        <pre>| Fecha   | Lote | Cultivo | Tarea         | Responsable | Insumo Aplicado | Cantidad | Costo | Observaciones |</pre>
+
+        <h4>Ejemplos de tareas:</h4>
+        <ul>
+            <li>Siembra, Fertilización, Riego, Aplicación de fitosanitarios, Cosecha.</li>
+        </ul>
+
+        <h4>Extras sugeridos:</h4>
+        <ul>
+            <li>Validación de tareas con lista desplegable.</li>
+            <li>Cálculo automático de costo por tarea.</li>
+            <li>Relación con hoja <code>Legajos</code> para asignar responsables.</li>
+        </ul>
+
+        <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Lote</th>
+                        <th>Cultivo</th>
+                        <th>Tarea</th>
+                        <th>Responsable</th>
+                        <th>Insumo Aplicado</th>
+                        <th>Cantidad</th>
+                        <th>Costo</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>20/10/2025</td>
+                        <td>Campo 1</td>
+                        <td>Maíz</td>
+                        <td>Fertilización</td>
+                        <td>Carlos Gómez</td>
+                        <td>Urea</td>
+                        <td>300 kg</td>
+                        <td>$45,000</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>15/11/2025</td>
+                        <td>Campo 2</td>
+                        <td>Soja</td>
+                        <td>Aplicación fitosanitaria</td>
+                        <td>María López</td>
+                        <td>Herbicida</td>
+                        <td>5 l</td>
+                        <td>$12,000</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>📄 Hoja <code>Costos_Hectarea</code></h3>
+        <pre>| Lote | Cultivo | Insumos Totales | Mano de Obra | Otros Costos | Costo Total | Superficie | Costo/ha |</pre>
+
+        <div class="formula-box">
+            <h4>Fórmulas clave:</h4>
+            <ul class="list-unstyled">
+                <li><strong>Costo/ha</strong> = Costo Total / Superficie</li>
+            </ul>
+        </div>
+
+        <h4>Extras sugeridos:</h4>
+        <ul>
+            <li>Segmentación por cultivo para comparar eficiencia.</li>
+            <li>Gráficos de barras para visualizar costos por lote.</li>
+        </ul>
+
+        <h3>📄 Hoja <code>Trazabilidad</code></h3>
+        <pre>| Lote | Cultivo | Tareas Realizadas | Insumos Aplicados | Fecha Cosecha | Responsable | Observaciones |</pre>
+
+        <h4>Diseño sugerido:</h4>
+        <ul>
+            <li>Tabla resumen con filtros por lote y cultivo.</li>
+            <li>Botón para generar informe PDF simulado.</li>
+        </ul>
+
+        <h3>🎓 Actividades sugeridas</h3>
+        <ul>
+            <li><strong>Simulación de campaña agrícola:</strong> cada grupo gestiona un lote completo desde siembra hasta cosecha.</li>
+            <li><strong>Análisis de rendimiento:</strong> ¿qué lote fue más eficiente? ¿Qué tarea tuvo mayor impacto?</li>
+            <li><strong>Informe de trazabilidad:</strong> generar un reporte completo del ciclo productivo.</li>
+        </ul>
+
+        <h3>📹 Recursos visuales</h3>
+        <ul>
+            <li><a href="https://www.youtube.com/watch?v=ejemplo_produccion" target="_blank">Video: Plantilla de producción agrícola en Excel</a> – muestra cómo registrar cultivos y tareas.</li>
+            <li><a href="https://www.example.com/erp-produccion" target="_blank">Plantilla ERP con módulo de producción</a> – incluye trazabilidad y costos por hectárea.</li>
+        </ul>
+    </section>
+
+    <!-- Botón flotante principal -->
+    <a href="index.html" class="floating-btn" title="Volver al índice">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <!-- Botón flotante para filtros -->
+    <div id="filters-btn" class="function-btn" title="Tabla con Filtros" data-bs-toggle="modal" data-bs-target="#filtersModal">
+        <i class="fas fa-filter"></i>
+    </div>
+
+    <!-- Botón flotante para PDF -->
+    <div id="pdf-btn" class="function-btn" title="Generar PDF" data-bs-toggle="modal" data-bs-target="#pdfModal">
+        <i class="fas fa-file-pdf"></i>
+    </div>
+
+    <!-- Botón flotante para validación -->
+    <div id="validation-btn" class="function-btn" title="Validación de Cultivos" data-bs-toggle="modal" data-bs-target="#validationModal">
+        <i class="fas fa-check-circle"></i>
+    </div>
+
+    <!-- Botón flotante para vinculación -->
+    <div id="link-btn" class="function-btn" title="Vincular Hojas" data-bs-toggle="modal" data-bs-target="#linkModal">
+        <i class="fas fa-link"></i>
+    </div>
+
+    <!-- Botón flotante para volver al índice -->
+    <a id="index-btn" class="function-btn" href="integracion.html" title="Volver al índice">
+        <i class="fas fa-arrow-right"></i>
+    </a>
+
+    <!-- Modal Filtros -->
+    <div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filtersModalLabel">Tabla Resumen con Filtros</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Crear tabla dinámica con filtros:</h5>
+                    <p>Permite analizar datos por lote, cultivo o período de tiempo.</p>
+                    
+                    <h5>Pasos en Excel:</h5>
+                    <ol>
+                        <li>Seleccionar los datos de la hoja <code>Trazabilidad</code></li>
+                        <li>Ir a <strong>Insertar > Tabla dinámica</strong></li>
+                        <li>Configurar campos:
+                            <ul>
+                                <li><strong>Filtros:</strong> Lote, Cultivo</li>
+                                <li><strong>Filas:</strong> Tareas Realizadas, Insumos</li>
+                                <li><strong>Valores:</strong> Conteo de tareas o sumatoria de costos</li>
+                            </ul>
+                        </li>
+                        <li>Agregar segmentación de datos para filtros visuales</li>
+                    </ol>
+                    
+                    <h5>Ejemplo de estructura:</h5>
+                    <pre>Tabla dinámica: Producción por Lote y Cultivo
+Filtros: [Lote] [Cultivo] [Período]
+Filas: Tareas realizadas
+Columnas: -
+Valores: Costo total, Rendimiento promedio</pre>
+                    
+                    <div class="alert alert-info">
+                        <strong>Tip:</strong> Usa la función <code>BUSCARV</code> o <code>XLOOKUP</code> para traer datos adicionales a la tabla resumen.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal PDF -->
+    <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel">Generar Informe PDF</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Configurar botón para exportar a PDF:</h5>
+                    <p>Permite generar reportes profesionales del ciclo productivo.</p>
+                    
+                    <h5>Pasos en Excel:</h5>
+                    <ol>
+                        <li>Crear una hoja de resumen con formato de informe</li>
+                        <li>Ir a <strong>Desarrollador > Insertar > Botón</strong></li>
+                        <li>Asignar macro con el siguiente código VBA:
+                            <pre>Sub GenerarPDF()
+    Dim rangoInforme As Range
+    Set rangoInforme = ThisWorkbook.Sheets("Informe").Range("A1:G30")
+    
+    rangoInforme.ExportAsFixedFormat _
+        Type:=xlTypePDF, _
+        Filename:="Informe_Produccion_" & Format(Now(), "yyyymmdd"), _
+        Quality:=xlQualityStandard, _
+        IncludeDocProperties:=True, _
+        IgnorePrintAreas:=False
+End Sub</pre>
+                        </li>
+                        <li>Formatear el botón y probar la funcionalidad</li>
+                    </ol>
+                    
+                    <h5>Elementos recomendados para el informe:</h5>
+                    <ul>
+                        <li>Logotipo de la empresa</li>
+                        <li>Tabla resumen de producción</li>
+                        <li>Gráficos de rendimiento</li>
+                        <li>Firma del responsable</li>
+                        <li>Fecha de generación automática</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Validación -->
+    <div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="validationModalLabel">Validación de Cultivos</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Crear lista desplegable para cultivos:</h5>
+                    <p>Permite estandarizar los tipos de cultivos registrados.</p>
+                    
+                    <h5>Pasos en Excel:</h5>
+                    <ol>
+                        <li>Crear una lista de cultivos en una hoja auxiliar (ej: Maíz, Soja, Trigo, Girasol)</li>
+                        <li>Seleccionar la columna "Cultivo" en la hoja <code>Lotes_Cultivos</code></li>
+                        <li>Ir a <strong>Datos > Validación de datos</strong></li>
+                        <li>Seleccionar "Lista" en <strong>Permitir</strong></li>
+                        <li>En <strong>Origen</strong>, seleccionar el rango con los cultivos</li>
+                        <li>Aceptar para aplicar la validación</li>
+                    </ol>
+                    
+                    <h5>Ejemplo avanzado:</h5>
+                    <p>Para cultivos que varían por temporada:</p>
+                    <pre>=INDIRECTO("Cultivos_" & TEXTO(HOY(),"QQ"))</pre>
+                    <p>Donde "Cultivos_1", "Cultivos_2", etc. son rangos con cultivos por trimestre.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Vinculación -->
+    <div class="modal fade" id="linkModal" tabindex="-1" aria-labelledby="linkModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="linkModalLabel">Vincular Hojas y Relacionar con Legajos</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Relacionar hojas para trazabilidad completa:</h5>
+                    
+                    <h5>1. Vincular Tareas con Legajos:</h5>
+                    <pre>=BUSCARV(E2, Legajos!A:B, 2, FALSO)</pre>
+                    <p>Donde E2 es el nombre del responsable, para traer datos del empleado.</p>
+                    
+                    <h5>2. Traer datos de cultivos a la hoja Tareas:</h5>
+                    <pre>=XLOOKUP(B2, Lotes_Cultivos!A:A, Lotes_Cultivos!B:B, "No encontrado")</pre>
+                    <p>Para mostrar automáticamente el cultivo cuando se selecciona un lote.</p>
+                    
+                    <h5>3. Calcular costos totales:</h5>
+                    <pre>=SUMAR.SI.CONJUNTO(Tareas!H:H, Tareas!B:B, A2)</pre>
+                    <p>Para sumar todos los costos asociados a un lote específico.</p>
+                    
+                    <div class="alert alert-info">
+                        <strong>Consejo:</strong> Usa nombres de rango para hacer las fórmulas más legibles, ejemplo:<br>
+                        <code>=SUMAR.SI.CONJUNTO(Tareas[Costo], Tareas[Lote], A2)</code>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
